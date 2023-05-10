@@ -21,7 +21,14 @@ public class GPTJModelUtils: ModelTypeScopedValidationUtils {
     do {
       try _GPTJModelUtils.validateModel(at: fileURL)
     } catch {
-      throw NSError(domain: CameLLMError.Domain, code: CameLLMError.Code.failedToValidateModel.rawValue)
+      throw NSError(
+        domain: CameLLMError.Domain,
+        code: CameLLMError.Code.failedToValidateModel.rawValue,
+        userInfo: [
+          NSLocalizedDescriptionKey: "Model is invalid",
+          NSUnderlyingErrorKey: error
+        ]
+      )
     }
   }
 }
