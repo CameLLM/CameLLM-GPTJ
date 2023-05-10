@@ -80,6 +80,7 @@ bool gptj_verify_magic(const std::string &fname, std::istream &fin, NSError **ou
         }
         return false;
     }
+    return true;
 }
 
 // load the model's weights from a stream
