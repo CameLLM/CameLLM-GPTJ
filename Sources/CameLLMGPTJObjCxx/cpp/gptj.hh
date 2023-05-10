@@ -12,6 +12,8 @@ public:
     GPTJ();
     ~GPTJ();
 
+    bool verifyMagic(const std::string &modelPath, NSError **outError) override;
+
     bool loadModel(const std::string &modelPath) override;
     bool loadModel(const std::string &modelPath, std::istream &fin, NSError **outError) override;
     bool isModelLoaded() const override;

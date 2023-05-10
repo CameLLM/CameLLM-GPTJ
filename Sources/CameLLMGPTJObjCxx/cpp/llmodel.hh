@@ -12,6 +12,8 @@ public:
     explicit LLModel() {}
     virtual ~LLModel() {}
 
+    virtual bool verifyMagic(const std::string &modelPath, NSError **outError) = 0;
+
     virtual bool loadModel(const std::string &modelPath) = 0;
     virtual bool loadModel(const std::string &modelPath, std::istream &fin, NSError **outError) = 0;
     virtual bool isModelLoaded() const = 0;

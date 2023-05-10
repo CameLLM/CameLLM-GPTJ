@@ -71,20 +71,24 @@ struct gptj_model {
     std::map<std::string, struct ggml_tensor *> tensors;
 };
 
+bool gptj_verify_magic(const std::string &fname, std::istream &fin, NSError **outError) {
+    uint32_t magic;
+    fin.read((char *) &magic, sizeof(magic));
+    if (magic != 0x67676d6c) {
+        if (outError) {
+            *outError = makeFailedToLoadModelErrorWithUnderlyingError(makeCameLLMError(_CameLLMErrorCodeGeneralInternalLoadFailure, [NSString stringWithFormat:@"invalid model file '%s' (bad magic)", fname.c_str()]));
+        }
+        return false;
+    }
+}
+
 // load the model's weights from a stream
 bool gptj_model_load(const std::string &fname, std::istream &fin, gptj_model & model, gpt_vocab & vocab, NSError **outError) {
 //    printf("%s: loading model from '%s' - please wait ...\n", __func__, fname.c_str());
 
     // verify magic
-    {
-        uint32_t magic;
-        fin.read((char *) &magic, sizeof(magic));
-        if (magic != 0x67676d6c) {
-            if (outError) {
-                *outError = makeFailedToLoadModelErrorWithUnderlyingError(makeCameLLMError(_CameLLMErrorCodeGeneralInternalLoadFailure, [NSString stringWithFormat:@"invalid model file '%s' (bad magic)", fname.c_str()]));
-            }
-            return false;
-        }
+    if (!gptj_verify_magic(fname, fin, outError)) {
+        return false;
     }
 
     // load hparams
@@ -664,6 +668,12 @@ GPTJ::GPTJ()
     : d_ptr(new GPTJPrivate) {
 
     d_ptr->modelLoaded = false;
+}
+
+bool GPTJ::verifyMagic(const std::string &modelPath, NSError **outError)
+{
+    auto fin = std::ifstream(modelPath, std::ios::binary);
+    return gptj_verify_magic(modelPath, fin, outError);
 }
 
 bool GPTJ::loadModel(const std::string &modelPath)
