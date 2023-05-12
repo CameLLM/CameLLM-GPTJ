@@ -16,7 +16,7 @@ public extension SessionManager {
 public class GPTJSessionManager {
   public func makeSession(
     with modelURL: URL
-  ) -> any Session {
+  ) -> any Session<GPTJSessionState, GPTJPredictionState> {
     return GPTJSession(modelURL: modelURL)
   }
 }
