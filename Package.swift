@@ -1,4 +1,4 @@
-// swift-tools-version: 5.5
+// swift-tools-version: 5.6
 
 import PackageDescription
 
@@ -15,9 +15,9 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(url: "https://github.com/CameLLM/CameLLM", branch: "main"),
-    .package(url: "https://github.com/CameLLM/CameLLM-Plugin-Harness", branch: "main"),
-    .package(url: "https://github.com/CameLLM/CameLLM-Common", branch: "main"),
+    .package(url: "https://github.com/CameLLM/CameLLM", exact: "0.0.1"),
+    .package(url: "https://github.com/CameLLM/CameLLM-Plugin-Harness", exact: "0.0.1"),
+    .package(url: "https://github.com/CameLLM/CameLLM-Common", exact: "0.0.1"),
   ],
   targets: [
     .target(
