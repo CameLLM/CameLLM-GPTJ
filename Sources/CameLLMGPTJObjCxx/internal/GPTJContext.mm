@@ -12,10 +12,11 @@
 
 @implementation GPTJContext
 
-- (instancetype)initWithGPTJ:(LLModel *)gptJ promptContext:(LLModel::PromptContext *)promptContext
+- (instancetype)initWithGPTJ:(LLModel *)gptJ params:(_GPTJSessionParams *)params promptContext:(LLModel::PromptContext *)promptContext
 {
   if ((self = [super init])) {
     _gptJ = gptJ;
+    _params = params;
     _promptContext = promptContext;
   }
   return self;

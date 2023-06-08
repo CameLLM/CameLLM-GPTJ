@@ -10,6 +10,7 @@
 #import "GPTJSetupOperation.h"
 #import "GPTJContext.h"
 #import "GPTJContext+Internal.hh"
+#import "GPTJSessionParams.h"
 
 #include "llmodel.hh"
 #import "gptj.hh"
@@ -17,16 +18,17 @@
 #include <fstream>
 
 @interface GPTJSetupOperation () {
+  _GPTJSessionParams *_params;
 }
 
 @end
 
 @implementation GPTJSetupOperation
 
-- (instancetype)initWithModelURL:(NSURL *)modelURL eventHandler:(GPTJSetupOperationEventHandler)eventHandler
+- (instancetype)initWithParams:(_GPTJSessionParams *)params eventHandler:(GPTJSetupOperationEventHandler)eventHandler
 {
   if ((self = [super init])) {
-    _modelURL = [modelURL copy];
+    _params = params;
     _eventHandler = [eventHandler copy];
   }
 
@@ -49,10 +51,10 @@
 
 - (BOOL)_setUpReturningContext:(GPTJContext **)outContext error:(NSError **)outError
 {
-  const std::string modelPath([_modelURL.path cStringUsingEncoding:NSUTF8StringEncoding]);
+  const std::string modelPath([_params.modelPath cStringUsingEncoding:NSUTF8StringEncoding]);
   LLModel *gptJ = new GPTJ;
 
-  NSString *modelName = [_modelURL.lastPathComponent stringByDeletingPathExtension];
+  NSString *modelName = [_params.modelPath.lastPathComponent stringByDeletingPathExtension];
   if (modelName.length == 0) {
     modelName = @"";
   }
@@ -65,7 +67,7 @@
 
   LLModel::PromptContext *promptContext = new LLModel::PromptContext;
 
-  GPTJContext *context = [[GPTJContext alloc] initWithGPTJ:gptJ promptContext:promptContext];
+  GPTJContext *context = [[GPTJContext alloc] initWithGPTJ:gptJ params:_params promptContext:promptContext];
 
   if (outContext) {
     *outContext = context;

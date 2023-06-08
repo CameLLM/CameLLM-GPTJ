@@ -14,6 +14,7 @@
 #import "GPTJPredictOperation.h"
 #import "GPTJContext.h"
 #import "GPTJContext+Internal.hh"
+#import "GPTJSessionParams.h"
 
 #include <functional>
 #include "gptj.hh"
@@ -76,7 +77,7 @@
     return !self.isCancelled;
   };
 
-  _context.gptJ->prompt(instructPrompt, fn, *_context.promptContext);
+  _context.gptJ->prompt(instructPrompt, fn, *_context.promptContext, _context.params.numberOfTokens, _context.params.topK, _context.params.topP, _context.params.temp, _context.params.batchSize);
 
   return YES;
 }

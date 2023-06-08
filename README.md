@@ -2,7 +2,7 @@
 
 This repository is under development.
 
-This repository uses the C++ bindings implemented in [nomic-ai/gpt4all-chat](https://github.com/nomic-ai/gpt4all-chat), licensed under the MIT license:
+This repository uses the C++ bindings implemented in [nomic-ai/gpt4all-chat](https://github.com/nomic-ai/gpt4all/tree/main/gpt4all-chat), licensed under the MIT license:
 
     Copyright 2023 Nomic, Inc.
 

@@ -38,7 +38,9 @@ public class GPTJSession: NSObject, Session {
   public typealias UpdatedContextHandler = (SessionContext) -> Void
 
   let modelURL: URL
+  let paramsBuilder: ObjCxxParamsBuilder
 
+  private lazy var params: _GPTJSessionParams = paramsBuilder.build(for: modelURL)
   private lazy var operationQueue: OperationQueue = {
     let operationQueue = OperationQueue()
     operationQueue.maxConcurrentOperationCount = 1
@@ -66,8 +68,9 @@ public class GPTJSession: NSObject, Session {
     return .none
   }
 
-  init(modelURL: URL) {
+  init(modelURL: URL, paramsBuilder: ObjCxxParamsBuilder) {
     self.modelURL = modelURL
+    self.paramsBuilder = paramsBuilder
   }
 
   // MARK: - Prediction
@@ -189,7 +192,7 @@ public class GPTJSession: NSObject, Session {
 
     state = .loadingModel
 
-    let operation = GPTJSetupOperation(modelURL: modelURL) { event in
+    let operation = GPTJSetupOperation(params: params) { event in
       DispatchQueue.main.async { [weak self] in
         self?.handleSetupOperationEvent(event)
       }

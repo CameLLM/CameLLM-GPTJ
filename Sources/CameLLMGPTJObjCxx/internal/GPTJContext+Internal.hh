@@ -9,11 +9,16 @@
 
 #include "llmodel.hh"
 
+@class _GPTJSessionParams;
+
 @interface GPTJContext ()
 
 @property (nonatomic, readonly, assign) LLModel *gptJ;
+@property (nonatomic, readonly) _GPTJSessionParams *params;
 @property (nonatomic, readonly, assign) LLModel::PromptContext *promptContext;
 
-- (instancetype)initWithGPTJ:(LLModel *)gptJ promptContext:(LLModel::PromptContext *)promptContext;
+- (instancetype)initWithGPTJ:(LLModel *)gptJ
+                      params:(_GPTJSessionParams *)params
+               promptContext:(LLModel::PromptContext *)promptContext;
 
 @end
